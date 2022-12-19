@@ -1,0 +1,10 @@
+.DS_Store
+.classpath
+.settings/
+.project
+target/
+**/bin/
+**/build/
+my-plugins/
+connector.properties
+run.sh
