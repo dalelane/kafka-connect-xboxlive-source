@@ -47,13 +47,15 @@ mvn package
 
 ## Configuration
 
+Class name: `uk.co.dalelane.kafkaconnect.xboxlive.XblSourceConnector`
+
 | Name                    | Description                                                              | Type    | Example                    |
 | ----------------------- | ------------------------------------------------------------------------ | ------- | -------------------------- |
 | `topic.prefix`          | Prefix for names of topics to create                                     | String  | XBOX.LIVE.                 |
 | `xbl.api.key`           | API key for OpenXBL (https://xbl.io)                                     | String  |                            |
 | `xbl.api.poll.interval` | How frequently the Connector should call the Xbox Live APIs (in seconds) | Integer | 600                        |
 
-A sample configuration file called [`sample-connector.properties`](https://github.com/dalelane/kafka-connect-xboxlive-source/blob/main/sample-connector.properties) is included.
+A sample configuration file called [`sample-connector.properties`](https://github.com/dalelane/kafka-connect-xboxlive-source/blob/master/sample-connector.properties) is included.
 
 
 ## Acknowledgements
