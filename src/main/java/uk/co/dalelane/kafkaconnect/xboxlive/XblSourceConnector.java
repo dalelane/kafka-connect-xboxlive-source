@@ -96,6 +96,6 @@ public class XblSourceConnector extends SourceConnector {
 
     @Override
     public String version() {
-        return "0.0.1";
+        return "0.0.2";
     }
 }

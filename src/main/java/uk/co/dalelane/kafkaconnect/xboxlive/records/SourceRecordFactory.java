@@ -56,7 +56,7 @@ public class SourceRecordFactory {
             .field("gamername", Schema.STRING_SCHEMA)
             .field("name", Schema.STRING_SCHEMA)
             .field("description", Schema.STRING_SCHEMA)
-            .field("icon", Schema.STRING_SCHEMA)
+            .field("icon", Schema.OPTIONAL_STRING_SCHEMA)
             .field("contentname", Schema.STRING_SCHEMA)
             .field("contentimage", Schema.STRING_SCHEMA)
             .field("platform", Schema.STRING_SCHEMA)

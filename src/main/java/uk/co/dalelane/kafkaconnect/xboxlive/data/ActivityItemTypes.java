@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public enum ActivityItemTypes {
 	ACHIEVEMENT("Achievement"),
+	LEGACY_ACHIEVEMENT("LegacyAchievement"),
 	CONTAINER("Container"),
 	SOCIAL_RECOMMENDATION("SocialRecommendation"),
 	GAME_DVR("GameDVR"),

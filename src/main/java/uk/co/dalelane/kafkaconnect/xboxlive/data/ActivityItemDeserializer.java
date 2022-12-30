@@ -17,6 +17,7 @@ public class ActivityItemDeserializer implements JsonDeserializer<ActivityItem> 
 		ActivityItemTypes type = ActivityItemTypes.fromString(obj.get("activityItemType").getAsString());
 		switch (type) {
 			case ACHIEVEMENT:
+			case LEGACY_ACHIEVEMENT:
 				return context.deserialize(json, AchievementActivity.class);
 			case CONTAINER:
 				return context.deserialize(json, ContainerActivity.class);
