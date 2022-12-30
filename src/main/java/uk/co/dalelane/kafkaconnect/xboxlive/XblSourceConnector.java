@@ -35,7 +35,7 @@ public class XblSourceConnector extends SourceConnector {
 
     @Override
     public Config validate(Map<String, String> connectorConfigs) {
-    	log.info("Validating config {}", connectorConfigs);
+        log.info("Validating config {}", connectorConfigs);
 
         Config validatedConfigs = super.validate(connectorConfigs);
 
@@ -51,7 +51,7 @@ public class XblSourceConnector extends SourceConnector {
                 missingTopicPrefix = false;
             }
             else if (configValue.name().equals(XblConfig.POLL_INTERVAL_PARAM_CONFIG)) {
-            	missingPollInterval = false;
+                missingPollInterval = false;
             }
         }
         if (missingApiKey) {
@@ -61,7 +61,7 @@ public class XblSourceConnector extends SourceConnector {
             throw new ConnectException("Topic name is required (topic.prefix)");
         }
         if (missingPollInterval) {
-        	throw new ConnectException("OpenXbl API poll interval is required (xbl.api.poll.interval)");
+            throw new ConnectException("OpenXbl API poll interval is required (xbl.api.poll.interval)");
         }
 
         return validatedConfigs;

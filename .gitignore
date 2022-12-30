@@ -8,3 +8,4 @@ target/
 my-plugins/
 connector.properties
 run.sh
+deploy/

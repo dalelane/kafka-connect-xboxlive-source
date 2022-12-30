@@ -41,11 +41,11 @@ public class ActivityFetcherTask extends TimerTask {
         connectorConfig = config;
 
         try {
-			urlObj = new URL("https://xbl.io/api/v2/activity/feed");
-		}
+            urlObj = new URL("https://xbl.io/api/v2/activity/feed");
+        }
         catch (MalformedURLException e) {
-        	log.error("failed to create URL", e);
-		}
+            log.error("failed to create URL", e);
+        }
 
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(ActivityItem.class, new ActivityItemDeserializer());
@@ -54,21 +54,21 @@ public class ActivityFetcherTask extends TimerTask {
 
     @Override
     public void run() {
-		log.info("Fetching activity data from API");
+        log.info("Fetching activity data from API");
 
-		try {
-			URLConnection conn = urlObj.openConnection();
-			conn.setRequestProperty("x-authorization", connectorConfig.getApiKey());
+        try {
+            URLConnection conn = urlObj.openConnection();
+            conn.setRequestProperty("x-authorization", connectorConfig.getApiKey());
 
-			InputStream is = conn.getInputStream();
+            InputStream is = conn.getInputStream();
 
-			Reader reader = new InputStreamReader(is, StandardCharsets.UTF_8);
+            Reader reader = new InputStreamReader(is, StandardCharsets.UTF_8);
 
-			ActivityFeed ad = parser.fromJson(reader, ActivityFeed.class);
-	    	dataCache.addFeed(ad);
-    	}
-    	catch (IOException e) {
-    		log.error("Failed to fetch activity data", e);
-		}
+            ActivityFeed ad = parser.fromJson(reader, ActivityFeed.class);
+            dataCache.addFeed(ad);
+        }
+        catch (IOException e) {
+            log.error("Failed to fetch activity data", e);
+        }
     }
 }

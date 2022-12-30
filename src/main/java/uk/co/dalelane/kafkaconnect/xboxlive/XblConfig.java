@@ -29,7 +29,7 @@ public class XblConfig extends AbstractConfig {
     public static ConfigDef configDef() {
         return new ConfigDef()
             .define(
-        		TOPIC_NAME_PREFIX_PARAM_CONFIG,
+                TOPIC_NAME_PREFIX_PARAM_CONFIG,
                 Type.STRING,
                 Importance.HIGH,
                 TOPIC_NAME_PREFIX_PARAM_DOC)
@@ -39,10 +39,10 @@ public class XblConfig extends AbstractConfig {
                 Importance.HIGH,
                 API_KEY_PARAM_DOC)
            .define(
-        		POLL_INTERVAL_PARAM_CONFIG,
-        		Type.INT,
-        		Importance.HIGH,
-        		POLL_INTERVAL_PARAM_DOC);
+                POLL_INTERVAL_PARAM_CONFIG,
+                Type.INT,
+                Importance.HIGH,
+                POLL_INTERVAL_PARAM_DOC);
     }
 
 
@@ -56,8 +56,8 @@ public class XblConfig extends AbstractConfig {
             XblConfig.API_KEY_PARAM_CONFIG,
             getApiKey());
         taskConfig.put(
-        	XblConfig.POLL_INTERVAL_PARAM_CONFIG,
-        	Integer.toString(getPollInterval()));
+            XblConfig.POLL_INTERVAL_PARAM_CONFIG,
+            Integer.toString(getPollInterval()));
 
         return taskConfig;
     }
@@ -72,6 +72,6 @@ public class XblConfig extends AbstractConfig {
     }
 
     public int getPollInterval() {
-    	return this.getInt(POLL_INTERVAL_PARAM_CONFIG);
+        return this.getInt(POLL_INTERVAL_PARAM_CONFIG);
     }
 }

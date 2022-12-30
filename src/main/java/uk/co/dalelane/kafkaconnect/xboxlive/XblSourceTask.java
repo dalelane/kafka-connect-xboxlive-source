@@ -56,42 +56,42 @@ public class XblSourceTask extends SourceTask {
 
 
     private Instant getPersistedOffset(XblConfig config) {
-    	log.debug("getting persisted offset");
+        log.debug("getting persisted offset");
 
-    	Instant offsetTimestamp = Instant.MIN;
+        Instant offsetTimestamp = Instant.MIN;
 
-    	if (context != null && context.offsetStorageReader() != null) {
-    		ActivityItemTypes[] activityItemTypes = new ActivityItemTypes[] {
-    			ActivityItemTypes.ACHIEVEMENT,
-    			ActivityItemTypes.CONTAINER,
-    			ActivityItemTypes.GAME_DVR,
-    			ActivityItemTypes.SCREENSHOT,
-    			ActivityItemTypes.TEXT_POST,
-    			ActivityItemTypes.USER_POST,
-    		};
+        if (context != null && context.offsetStorageReader() != null) {
+            ActivityItemTypes[] activityItemTypes = new ActivityItemTypes[] {
+                ActivityItemTypes.ACHIEVEMENT,
+                ActivityItemTypes.CONTAINER,
+                ActivityItemTypes.GAME_DVR,
+                ActivityItemTypes.SCREENSHOT,
+                ActivityItemTypes.TEXT_POST,
+                ActivityItemTypes.USER_POST,
+            };
 
-    		for (ActivityItemTypes activityItemType : activityItemTypes) {
-    			log.debug("looking for offset for " + activityItemType);
-    			Map<String, Object> sourcePartition = SourceRecordFactory.createSourcePartition(activityItemType);
-    			Map<String, Object> persistedOffsetInfo = context.offsetStorageReader().offset(sourcePartition);
-    			if (persistedOffsetInfo != null) {
-    				String lastOffsetTimestamp = (String) persistedOffsetInfo.get(SourceRecordFactory.SOURCE_OFFSET);
-    				Instant lastOffsetTime = Instant.parse(lastOffsetTimestamp);
+            for (ActivityItemTypes activityItemType : activityItemTypes) {
+                log.debug("looking for offset for " + activityItemType);
+                Map<String, Object> sourcePartition = SourceRecordFactory.createSourcePartition(activityItemType);
+                Map<String, Object> persistedOffsetInfo = context.offsetStorageReader().offset(sourcePartition);
+                if (persistedOffsetInfo != null) {
+                    String lastOffsetTimestamp = (String) persistedOffsetInfo.get(SourceRecordFactory.SOURCE_OFFSET);
+                    Instant lastOffsetTime = Instant.parse(lastOffsetTimestamp);
 
-    				log.debug("offset for " + activityItemType + " is " + lastOffsetTime.toString());
+                    log.debug("offset for " + activityItemType + " is " + lastOffsetTime.toString());
 
-    				if (lastOffsetTime.compareTo(offsetTimestamp) > 0) {
-    					offsetTimestamp = lastOffsetTime;
-    				}
-     			}
-    			else {
-    				log.debug("no persisted offset found");
-    			}
-    		}
-    	}
+                    if (lastOffsetTime.compareTo(offsetTimestamp) > 0) {
+                        offsetTimestamp = lastOffsetTime;
+                    }
+                 }
+                else {
+                    log.debug("no persisted offset found");
+                }
+            }
+        }
 
-    	log.info("offset timestamp {}", offsetTimestamp);
+        log.info("offset timestamp {}", offsetTimestamp);
 
-    	return offsetTimestamp;
+        return offsetTimestamp;
     }
 }

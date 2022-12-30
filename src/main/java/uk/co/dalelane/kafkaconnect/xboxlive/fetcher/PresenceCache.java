@@ -22,37 +22,39 @@ public class PresenceCache {
     private final Map<String, Presence> latestPresence;
 
     public PresenceCache() {
-    	presenceItemsQueue = new ConcurrentLinkedQueue<>();
-    	latestPresence = new HashMap<>();
+        presenceItemsQueue = new ConcurrentLinkedQueue<>();
+        latestPresence = new HashMap<>();
     }
 
 
-	public void init(Collection<Presence> initialPresences) {
-		log.info("Getting initial set of presences to recognize change events");
-		for (Presence presence : initialPresences) {
-			latestPresence.put(presence.getXuid(), presence);
-		}
-	}
+    public void init(Collection<Presence> initialPresences) {
+        log.info("Getting initial set of presences to recognize change events");
+        for (Presence presence : initialPresences) {
+            latestPresence.put(presence.getXuid(), presence);
+            log.debug("initial presence {}", presence);
+        }
+    }
 
 
     public synchronized void addPresences(Collection<Presence> presences) {
-    	log.info("Adding presences to cache");
+        log.info("Adding presences to cache");
 
         int numberAdded = 0;
         for (Presence presence : presences) {
-        	String userid = presence.getXuid();
-        	if (latestPresence.containsKey(userid) &&
-        		latestPresence.get(userid).equals(presence))
-        	{
-        		// unchanged - ignoring
-        	}
-        	else {
-        		latestPresence.put(userid, presence);
-        		presenceItemsQueue.add(presence);
-        		numberAdded += 1;
+            String userid = presence.getXuid();
+            if (latestPresence.containsKey(userid) &&
+                latestPresence.get(userid).equals(presence))
+            {
+                // unchanged - ignoring
+                log.debug("ignoring presence {} which matches {}", presence, latestPresence.get(userid));
+            }
+            else {
+                latestPresence.put(userid, presence);
+                presenceItemsQueue.add(presence);
+                numberAdded += 1;
 
-        		log.info("adding {}", presence);
-        	}
+                log.info("adding {}", presence);
+            }
         }
 
         log.debug("added items {}", numberAdded);
@@ -65,9 +67,9 @@ public class PresenceCache {
         Presence nextItem = presenceItemsQueue.poll();
 
         while (nextItem != null) {
-        	items.add(nextItem);
+            items.add(nextItem);
 
-        	nextItem = presenceItemsQueue.poll();
+            nextItem = presenceItemsQueue.poll();
         }
 
         return items;

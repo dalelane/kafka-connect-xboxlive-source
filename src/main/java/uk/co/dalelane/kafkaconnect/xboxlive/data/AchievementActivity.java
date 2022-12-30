@@ -26,29 +26,29 @@ public class AchievementActivity extends GameActivityItem {
     @Expose
     private Boolean hasArtAward;
 
-	@SerializedName("achievementScid")
-	@Expose
-	private String achievementScid;
+    @SerializedName("achievementScid")
+    @Expose
+    private String achievementScid;
 
-	@SerializedName("achievementId")
-	@Expose
-	private String achievementId;
+    @SerializedName("achievementId")
+    @Expose
+    private String achievementId;
 
-	@SerializedName("achievementType")
-	@Expose
-	private String achievementType;
+    @SerializedName("achievementType")
+    @Expose
+    private String achievementType;
 
-	@SerializedName("achievementIcon")
-	@Expose
-	private String achievementIcon;
+    @SerializedName("achievementIcon")
+    @Expose
+    private String achievementIcon;
 
-	@SerializedName("rarityCategory")
-	@Expose
-	private String rarityCategory;
+    @SerializedName("rarityCategory")
+    @Expose
+    private String rarityCategory;
 
-	@SerializedName("rarityPercentage")
-	@Expose
-	private Integer rarityPercentage;
+    @SerializedName("rarityPercentage")
+    @Expose
+    private Integer rarityPercentage;
 
     @SerializedName("gamerscore")
     @Expose
@@ -107,9 +107,9 @@ public class AchievementActivity extends GameActivityItem {
 
     @Override
     public String toString() {
-    	return "AchievementActivity { " +
-    		"user=" + getUserXuid() + ", " +
-    		"name=" + achievementName +
-    		" }";
+        return "AchievementActivity { " +
+            "user=" + getUserXuid() + ", " +
+            "name=" + achievementName +
+            " }";
     }
 }

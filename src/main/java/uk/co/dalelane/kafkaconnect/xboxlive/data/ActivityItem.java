@@ -114,7 +114,7 @@ public class ActivityItem {
         return activityItemType;
     }
     public ActivityItemTypes getType() {
-    	return ActivityItemTypes.fromString(activityItemType);
+        return ActivityItemTypes.fromString(activityItemType);
     }
 
     public String getContentType() {
@@ -178,35 +178,35 @@ public class ActivityItem {
     }
 
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(activityItemType, getDate());
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(activityItemType, getDate());
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
 
-		ActivityItem other = (ActivityItem) obj;
-		return Objects.equals(activityItemType, other.activityItemType) &&
-				Objects.equals(getDate(), other.getDate());
-	}
+        ActivityItem other = (ActivityItem) obj;
+        return Objects.equals(activityItemType, other.activityItemType) &&
+                Objects.equals(getDate(), other.getDate());
+    }
 
 
-	@Override
-	public String toString() {
-		return "ActivityItem { " +
-			"description=\"" + description + "\", " +
-			"xuid=" + userXuid + ", " +
-			"type=" + activityItemType +
-			" }";
-	}
+    @Override
+    public String toString() {
+        return "ActivityItem { " +
+            "description=\"" + description + "\", " +
+            "xuid=" + userXuid + ", " +
+            "type=" + activityItemType +
+            " }";
+    }
 }

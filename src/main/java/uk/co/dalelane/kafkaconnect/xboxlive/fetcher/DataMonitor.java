@@ -75,13 +75,13 @@ public class DataMonitor {
 
 
     public List<SourceRecord> getRecords() {
-    	Stream<SourceRecord> activityRecords = activityData.getActivityItems()
-        		.stream()
+        Stream<SourceRecord> activityRecords = activityData.getActivityItems()
+                .stream()
                 .map(d -> recordFactory.createSourceRecord(d));
-    	Stream<SourceRecord> presenceRecords = presenceData.getPresences()
-    			.stream()
-    			.map(d -> recordFactory.createSourceRecord(d));
-    	return Stream.concat(activityRecords, presenceRecords)
-    			.collect(Collectors.toList());
+        Stream<SourceRecord> presenceRecords = presenceData.getPresences()
+                .stream()
+                .map(d -> recordFactory.createSourceRecord(d));
+        return Stream.concat(activityRecords, presenceRecords)
+                .collect(Collectors.toList());
     }
 }

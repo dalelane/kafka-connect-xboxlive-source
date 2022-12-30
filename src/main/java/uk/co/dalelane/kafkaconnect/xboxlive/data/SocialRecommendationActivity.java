@@ -7,8 +7,8 @@ import com.google.gson.annotations.SerializedName;
 
 public class SocialRecommendationActivity extends ActivityItem {
 
-	private String nonNullDate;
-	
+    private String nonNullDate;
+
     @SerializedName("recommendations")
     @Expose
     private Recommendations recommendations;
@@ -17,15 +17,15 @@ public class SocialRecommendationActivity extends ActivityItem {
     public Recommendations getRecommendations() {
         return recommendations;
     }
-    
+
     @Override
     public String getDate() {
-    	if (nonNullDate == null) {
-    		nonNullDate = super.getDate();
-    		if (nonNullDate == null) {
-	    		nonNullDate = Instant.now().toString();
-	    	}
-    	}
-    	return nonNullDate;
+        if (nonNullDate == null) {
+            nonNullDate = super.getDate();
+            if (nonNullDate == null) {
+                nonNullDate = Instant.now().toString();
+            }
+        }
+        return nonNullDate;
     }
 }

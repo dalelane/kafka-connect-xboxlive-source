@@ -52,28 +52,28 @@ public class Title {
     }
 
     public Instant getLastModifiedInstant() {
-    	return Instant.parse(lastModified);
+        return Instant.parse(lastModified);
     }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(id, state);
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, state);
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
 
-		Title other = (Title) obj;
-		return Objects.equals(id, other.id) &&
-				Objects.equals(state, other.state);
-	}
+        Title other = (Title) obj;
+        return Objects.equals(id, other.id) &&
+                Objects.equals(state, other.state);
+    }
 }

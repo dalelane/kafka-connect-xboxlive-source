@@ -49,75 +49,75 @@ public class Presence {
     }
 
     public String getDate() {
-		return objectCreationDate;
-	}
-
-    public Title getFullTitle() {
-		Title fullTitle = null;
-    	if (devices != null && devices.isEmpty() == false) {
-    		Device firstDevice = devices.get(0);
-    		if (firstDevice.getTitles() != null) {
-    			Optional<Title> title = firstDevice.getTitles()
-    				.stream()
-    				.filter(t -> t.getPlacement().equals("Full"))
-    				.sorted(Comparator.comparing(Title::getLastModifiedInstant).reversed())
-    				.findFirst();
-    			if (title.isPresent()) {
-    				fullTitle = title.get();
-    			}
-    		}
-    	}
-    	return fullTitle;
+        return objectCreationDate;
     }
 
-	@Override
-	public int hashCode() {
-		// hash based on user id
-		return Objects.hash(xuid);
-	}
+    public Title getFullTitle() {
+        Title fullTitle = null;
+        if (devices != null && devices.isEmpty() == false) {
+            Device firstDevice = devices.get(0);
+            if (firstDevice.getTitles() != null) {
+                Optional<Title> title = firstDevice.getTitles()
+                    .stream()
+                    .filter(t -> t.getPlacement().equals("Full"))
+                    .sorted(Comparator.comparing(Title::getLastModifiedInstant).reversed())
+                    .findFirst();
+                if (title.isPresent()) {
+                    fullTitle = title.get();
+                }
+            }
+        }
+        return fullTitle;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
+    @Override
+    public int hashCode() {
+        // hash based on user id
+        return Objects.hash(xuid);
+    }
 
-		Presence other = (Presence) obj;
-		if (xuid.equals(other.xuid) == false) {
-			return false;
-		}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
 
-		// if we're here, we've got two
-		//  presence objects for the same user
+        Presence other = (Presence) obj;
+        if (xuid.equals(other.xuid) == false) {
+            return false;
+        }
 
-		if ("Online".equals(state) && "Online".equals(other.state)) {
-			Title title = getFullTitle();
-			Title otherTitle = other.getFullTitle();
+        // if we're here, we've got two
+        //  presence objects for the same user
 
-			if (title == null && otherTitle == null) {
-				return true;
-			}
-			if (title == null || otherTitle == null) {
-				return false;
-			}
-			return title.equals(otherTitle);
-		}
+        if ("Online".equals(state) && "Online".equals(other.state)) {
+            Title title = getFullTitle();
+            Title otherTitle = other.getFullTitle();
 
-		return state.equals(other.state);
-	}
+            if (title == null && otherTitle == null) {
+                return true;
+            }
+            if (title == null || otherTitle == null) {
+                return false;
+            }
+            return title.equals(otherTitle);
+        }
+
+        return state.equals(other.state);
+    }
 
 
-	@Override
-	public String toString() {
-		return "Presence { " +
-			"xuid=" + xuid + ", " +
-			"state=" + state +
-			" }";
-	}
+    @Override
+    public String toString() {
+        return "Presence { " +
+            "xuid=" + xuid + ", " +
+            "state=" + state +
+            " }";
+    }
 }

@@ -43,11 +43,11 @@ public class PresenceFetcherTask extends TimerTask {
         connectorConfig = config;
 
         try {
-			urlObj = new URL("https://xbl.io/api/v2/presence");
-		}
+            urlObj = new URL("https://xbl.io/api/v2/presence");
+        }
         catch (MalformedURLException e) {
-        	log.error("failed to create URL", e);
-		}
+            log.error("failed to create URL", e);
+        }
 
         collectionType = TypeToken.getParameterized(List.class, Presence.class).getType();
         parser = new Gson();
@@ -59,27 +59,27 @@ public class PresenceFetcherTask extends TimerTask {
 
     @Override
     public void run() {
-		log.info("Fetching presence data from API");
+        log.info("Fetching presence data from API");
 
         Collection<Presence> presences = getPresenceData();
-    	dataCache.addPresences(presences);
+        dataCache.addPresences(presences);
     }
 
 
     private Collection<Presence> getPresenceData() {
-		try {
-			URLConnection conn = urlObj.openConnection();
-			conn.setRequestProperty("x-authorization", connectorConfig.getApiKey());
+        try {
+            URLConnection conn = urlObj.openConnection();
+            conn.setRequestProperty("x-authorization", connectorConfig.getApiKey());
 
-			InputStream is = conn.getInputStream();
+            InputStream is = conn.getInputStream();
 
-			Reader reader = new InputStreamReader(is, StandardCharsets.UTF_8);
+            Reader reader = new InputStreamReader(is, StandardCharsets.UTF_8);
 
-	        return parser.fromJson(reader, collectionType);
-    	}
-    	catch (IOException e) {
-			log.error("Failed to fetch presence data", e);
-			return Collections.emptyList();
-    	}
+            return parser.fromJson(reader, collectionType);
+        }
+        catch (IOException e) {
+            log.error("Failed to fetch presence data", e);
+            return Collections.emptyList();
+        }
     }
 }
