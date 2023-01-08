@@ -204,9 +204,10 @@ public class ActivityItem {
     @Override
     public String toString() {
         return "ActivityItem { " +
-            "description=\"" + description + "\", " +
+            "type=" + activityItemType + ", " +
             "xuid=" + userXuid + ", " +
-            "type=" + activityItemType +
+            "date=" + date + ", " +
+            "description=\"" + description + "\"" +
             " }";
     }
 }

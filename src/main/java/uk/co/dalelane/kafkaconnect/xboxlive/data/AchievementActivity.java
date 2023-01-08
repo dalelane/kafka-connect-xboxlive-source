@@ -109,6 +109,7 @@ public class AchievementActivity extends GameActivityItem {
     public String toString() {
         return "AchievementActivity { " +
             "user=" + getUserXuid() + ", " +
+            "date=" + getDate() + ", " +
             "name=" + achievementName +
             " }";
     }
