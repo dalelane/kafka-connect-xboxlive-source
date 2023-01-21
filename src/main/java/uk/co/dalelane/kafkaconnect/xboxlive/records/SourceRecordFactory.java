@@ -75,6 +75,7 @@ public class SourceRecordFactory {
         Struct struct;
         switch (data.getType()) {
             case ACHIEVEMENT:
+            case LEGACY_ACHIEVEMENT:
                 AchievementActivity item = (AchievementActivity) data;
 
                 struct =  new Struct(ACHIEVEMENTS_SCHEMA);
@@ -121,6 +122,7 @@ public class SourceRecordFactory {
     private String getTopicName(ActivityItemTypes activityItemType) {
         switch (activityItemType) {
             case ACHIEVEMENT:
+            case LEGACY_ACHIEVEMENT:
                 return achievementTopic;
             case CONTAINER:
                 return containerTopic;
@@ -142,6 +144,7 @@ public class SourceRecordFactory {
     private Schema getSchema(ActivityItemTypes activityItemType) {
         switch (activityItemType) {
             case ACHIEVEMENT:
+            case LEGACY_ACHIEVEMENT:
                 return ACHIEVEMENTS_SCHEMA;
             case CONTAINER:
             case SOCIAL_RECOMMENDATION:
