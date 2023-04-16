@@ -8,7 +8,7 @@
 	<groupId>uk.co.dalelane.kafkaconnect.xboxlive</groupId>
 	<artifactId>kafka-connect-xboxlive-source</artifactId>
 	<description>Kafka Connect Xbox Live Source Connector</description>
-	<version>0.0.2</version>
+	<version>0.0.3</version>
 
 	<licenses>
 		<license>
@@ -50,13 +50,13 @@
 		<dependency>
 			<groupId>org.apache.kafka</groupId>
 			<artifactId>connect-api</artifactId>
-			<version>3.3.1</version>
+			<version>3.4.0</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
-			<version>2.10</version>
+			<version>2.10.1</version>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
@@ -66,7 +66,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
-				<version>3.3.0</version>
+				<version>3.3.1</version>
 				<configuration>
 					<encoding>UTF-8</encoding>
 				</configuration>
@@ -74,7 +74,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.10.1</version>
+				<version>3.11.0</version>
 				<inherited>true</inherited>
 				<configuration>
 					<source>1.8</source>
@@ -85,7 +85,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
-				<version>3.4.2</version>
+				<version>3.5.0</version>
 				<configuration>
 					<descriptorRefs>
 						<descriptorRef>jar-with-dependencies</descriptorRef>
