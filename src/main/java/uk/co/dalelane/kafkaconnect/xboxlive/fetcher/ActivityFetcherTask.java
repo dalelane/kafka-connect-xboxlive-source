@@ -1,14 +1,7 @@
 package uk.co.dalelane.kafkaconnect.xboxlive.fetcher;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.Reader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.nio.charset.StandardCharsets;
-import java.util.TimerTask;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,53 +15,53 @@ import uk.co.dalelane.kafkaconnect.xboxlive.data.ActivityItem;
 import uk.co.dalelane.kafkaconnect.xboxlive.data.ActivityItemDeserializer;
 
 
-public class ActivityFetcherTask extends TimerTask {
+/**
+ * Fetches activity events (e.g. achievements) from the Xbox Live API
+ *  at scheduled intervals, and adds it to a local cache.
+ */
+public class ActivityFetcherTask extends XboxTimerTask {
 
     private static Logger log = LoggerFactory.getLogger(ActivityFetcherTask.class);
 
+    // items retrieved from the Xbox Live API will be
+    //  added to this cache
     private final ActivityItemCache dataCache;
-    private final XblConfig connectorConfig;
-
-    private URL urlObj;
-    private Gson parser;
-
 
 
     public ActivityFetcherTask(ActivityItemCache cache, XblConfig config) {
-        log.info("Initializing activity fetcher task");
+        super("https://xbl.io/api/v2/activity/feed", config);
 
+        // store a reference to the cache to add items to
         dataCache = cache;
-        connectorConfig = config;
-
-        try {
-            urlObj = new URL("https://xbl.io/api/v2/activity/feed");
-        }
-        catch (MalformedURLException e) {
-            log.error("failed to create URL", e);
-        }
-
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(ActivityItem.class, new ActivityItemDeserializer());
-        parser = gsonBuilder.create();
     }
+
 
     @Override
     public void run() {
         log.info("Fetching activity data from API");
 
         try {
-            URLConnection conn = urlObj.openConnection();
-            conn.setRequestProperty("x-authorization", connectorConfig.getApiKey());
+            // get API response
+            Reader reader = getApiReader();
 
-            InputStream is = conn.getInputStream();
-
-            Reader reader = new InputStreamReader(is, StandardCharsets.UTF_8);
-
+            // parse API response into Java POJO's
             ActivityFeed ad = parser.fromJson(reader, ActivityFeed.class);
+
+            // add the parsed response to the cache
             dataCache.addFeed(ad);
         }
         catch (IOException e) {
             log.error("Failed to fetch activity data", e);
         }
+    }
+
+
+    @Override
+    protected Gson createParser() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(
+                ActivityItem.class,
+                new ActivityItemDeserializer());
+        return gsonBuilder.create();
     }
 }

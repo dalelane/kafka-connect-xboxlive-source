@@ -14,7 +14,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+/**
+ * A source connector for making data from Xbox Live available
+ *  as Kafka events.
+ */
 public class XblSourceConnector extends SourceConnector {
+
+    protected static final String VERSION = "0.0.4";
 
     private final Logger log = LoggerFactory.getLogger(XblSourceConnector.class);
 
@@ -33,6 +39,10 @@ public class XblSourceConnector extends SourceConnector {
     }
 
 
+    /**
+     * Checks that all required config values are provided, throws
+     *  a descriptive exception if any are found to be missing.
+     */
     @Override
     public Config validate(Map<String, String> connectorConfigs) {
         log.info("Validating config {}", connectorConfigs);
@@ -43,6 +53,8 @@ public class XblSourceConnector extends SourceConnector {
         boolean missingTopicPrefix = true;
         boolean missingPollInterval = true;
 
+        // check all of the provided config values before declaring
+        //  anything missing
         for (ConfigValue configValue : validatedConfigs.configValues()) {
             if (configValue.name().equals(XblConfig.API_KEY_PARAM_CONFIG)) {
                 missingApiKey = false;
@@ -67,7 +79,9 @@ public class XblSourceConnector extends SourceConnector {
         return validatedConfigs;
     }
 
-
+    /**
+     * Fetch a set of config for connector tasks.
+     */
     @Override
     public List<Map<String, String>> taskConfigs(int maxTasks) {
         if (maxTasks > 1) {
@@ -80,10 +94,12 @@ public class XblSourceConnector extends SourceConnector {
     }
 
 
+    /**
+     * Starts the connector - initialise the connector config.
+     */
     @Override
     public void start(Map<String, String> props) {
         log.info("Starting connector {}", props);
-
         config = new XblConfig(props);
     }
 
@@ -96,6 +112,6 @@ public class XblSourceConnector extends SourceConnector {
 
     @Override
     public String version() {
-        return "0.0.2";
+        return VERSION;
     }
 }

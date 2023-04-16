@@ -9,6 +9,9 @@ import org.apache.kafka.common.config.ConfigDef.Importance;
 import org.apache.kafka.common.config.ConfigDef.Type;
 
 
+/**
+ * Defines the config that the connector expects Kafka Connect to provide.
+ */
 public class XblConfig extends AbstractConfig {
 
     public static final String TOPIC_NAME_PREFIX_PARAM_CONFIG = "topic.prefix";

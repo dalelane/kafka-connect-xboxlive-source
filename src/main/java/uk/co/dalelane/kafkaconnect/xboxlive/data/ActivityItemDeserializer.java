@@ -20,11 +20,13 @@ public class ActivityItemDeserializer implements JsonDeserializer<ActivityItem> 
     @Override
     public ActivityItem deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject obj = (JsonObject) json;
+
         ActivityItemTypes type = ActivityItemTypes.fromString(obj.get("activityItemType").getAsString());
         if (type == null) {
             log.error("activity type missing {}", obj);
             return context.deserialize(json, ActivityItem.class);
         }
+
         switch (type) {
             case ACHIEVEMENT:
             case LEGACY_ACHIEVEMENT:
