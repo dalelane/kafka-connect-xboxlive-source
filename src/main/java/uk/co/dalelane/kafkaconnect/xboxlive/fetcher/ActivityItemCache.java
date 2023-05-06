@@ -16,19 +16,28 @@ import uk.co.dalelane.kafkaconnect.xboxlive.data.ContainerActivity;
 import uk.co.dalelane.kafkaconnect.xboxlive.data.GameDVRActivity;
 import uk.co.dalelane.kafkaconnect.xboxlive.data.ScreenshotActivity;
 import uk.co.dalelane.kafkaconnect.xboxlive.data.SocialRecommendationActivity;
-import uk.co.dalelane.kafkaconnect.xboxlive.data.TextPostActivity;
-import uk.co.dalelane.kafkaconnect.xboxlive.data.UserPostActivity;
 
 
 public class ActivityItemCache {
 
     private static Logger log = LoggerFactory.getLogger(ActivityItemCache.class);
 
+    /**
+     * Queue of events waiting in the cache to be retrieved by
+     *  Kafka Connect.
+     */
     private final SortedSet<ActivityItem> activityItemsCache;
 
+    /**
+     * Timestamp of the most recent activity item to be added to the
+     *  cache. Used to minimize the number of duplicate events emitted.
+     */
     private Instant offsetTimestamp;
 
+
+
     public ActivityItemCache(Instant startTimestamp) {
+        log.debug("Creating activity item cache for activity items newer than {}", startTimestamp);
         activityItemsCache = new TreeSet<>(new ActivityItemComparator());
         offsetTimestamp = startTimestamp;
     }
@@ -37,35 +46,34 @@ public class ActivityItemCache {
     public synchronized void addFeed(ActivityFeed activityFeed) {
         log.info("Adding activity items to cache");
 
-        int numberAdded = 0;
         for (ActivityItem ai : activityFeed.getActivityItems()) {
             if (ai instanceof ContainerActivity) {
                 ContainerActivity cai = (ContainerActivity) ai;
                 for (ActivityItem fi : cai.getFeedItems()) {
-                    numberAdded += addItemToFeed(fi);
+                    addItemToFeed(fi);
                 }
             }
             else {
-                numberAdded += addItemToFeed(ai);
+                addItemToFeed(ai);
             }
         }
-
-        log.debug("added items {}", numberAdded);
     }
 
 
 
-    private int addItemToFeed(ActivityItem item) {
+    private void addItemToFeed(ActivityItem item) {
         if (shouldIgnore(item)) {
-            log.debug("ignoring {}", item);
+            log.debug("ignoring item based on type {}", item);
         }
-        else if (getTimestamp(item).compareTo(offsetTimestamp) > 0) {
+        else if (getTimestamp(item).isAfter(offsetTimestamp)) {
             activityItemsCache.add(item);
+            offsetTimestamp = getTimestamp(item);
+
             log.info("adding {}", item);
-            return 1;
         }
-        // else already added to feed
-        return 0;
+        else {
+            log.debug("ignoring old item {}", item);
+        }
     }
 
 
@@ -74,9 +82,7 @@ public class ActivityItemCache {
     private boolean shouldIgnore(ActivityItem item) {
         return item instanceof SocialRecommendationActivity ||
             item instanceof GameDVRActivity ||
-            item instanceof ScreenshotActivity ||
-            item instanceof TextPostActivity ||
-            item instanceof UserPostActivity;
+            item instanceof ScreenshotActivity;
     }
 
 
@@ -91,8 +97,6 @@ public class ActivityItemCache {
                 log.error("failed to remove item from cache {}", nextItem);
             }
             else {
-                offsetTimestamp = getTimestamp(nextItem);
-
                 items.add(nextItem);
             }
         }

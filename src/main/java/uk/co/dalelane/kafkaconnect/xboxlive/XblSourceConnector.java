@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
  */
 public class XblSourceConnector extends SourceConnector {
 
-    protected static final String VERSION = "0.0.4";
+    protected static final String VERSION = "0.1.0";
 
     private final Logger log = LoggerFactory.getLogger(XblSourceConnector.class);
 

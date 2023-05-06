@@ -37,6 +37,30 @@ One of your friends on Xbox LIVE has changed their status (e.g. started playing 
 | `titlename`      | String   | name of the game the user has started playing (will be null for Offline statuses)      | Neon Abyss  |
 
 
+**Topic: `USERPOSTS`**
+
+One of your friends on Xbox LIVE has posted to the Xbox social network.
+
+| **field**        | **type** | **description**                                                                        | **example** |
+| ---------------- | -------- | -------------------------------------------------------------------------------------- | ----------- |
+| `date`           | String   | datetime when the post was made                                                        | 2023-05-06T21:06:00Z |
+| `gamertag`       | String   | username for who made the post                                                         | dalelane    |
+| `gamername`      | String   | name of the user who made the post, if they have a full name in their profile          | Dale Lane   |
+| `description`    | String   | contents of the post                                                                   | This is my post  |
+
+
+**Topic: `TEXTPOSTS`**
+
+One of your friends on Xbox LIVE has posted to the Xbox social network.
+
+| **field**        | **type** | **description**                                                                        | **example** |
+| ---------------- | -------- | -------------------------------------------------------------------------------------- | ----------- |
+| `date`           | String   | datetime when the post was made                                                        | 2023-05-06T21:06:00Z |
+| `gamertag`       | String   | username for who made the post                                                         | dalelane    |
+| `gamername`      | String   | name of the user who made the post, if they have a full name in their profile          | Dale Lane   |
+| `description`    | String   | contents of the post                                                                   | This is my post  |
+
+
 
 ## Building the connector
 

@@ -8,7 +8,7 @@
     <groupId>uk.co.dalelane.kafkaconnect.xboxlive</groupId>
     <artifactId>kafka-connect-xboxlive-source</artifactId>
     <description>Kafka Connect Xbox Live Source Connector</description>
-    <version>0.0.5</version>
+    <version>0.1.0</version>
 
     <licenses>
         <license>

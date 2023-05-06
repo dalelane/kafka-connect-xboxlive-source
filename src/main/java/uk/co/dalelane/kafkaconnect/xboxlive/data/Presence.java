@@ -29,7 +29,7 @@ public class Presence {
     private LastSeen lastSeen;
 
 
-    private String objectCreationDate = Instant.now().toString();
+    private Instant objectCreationDate = Instant.now();
 
 
     public String getXuid() {
@@ -48,7 +48,14 @@ public class Presence {
         return lastSeen;
     }
 
-    public String getDate() {
+    public Instant getDate() {
+        // prefer the timestamp for the mentioned title if available
+        Title title = getFullTitle();
+        if (title != null && title.getLastModified() != null) {
+            return title.getLastModified();
+        }
+
+        // default to object creation timestamp otherwise
         return objectCreationDate;
     }
 
@@ -60,7 +67,7 @@ public class Presence {
                 Optional<Title> title = firstDevice.getTitles()
                     .stream()
                     .filter(t -> t.getPlacement().equals("Full"))
-                    .sorted(Comparator.comparing(Title::getLastModifiedInstant).reversed())
+                    .sorted(Comparator.comparing(Title::getLastModified).reversed())
                     .findFirst();
                 if (title.isPresent()) {
                     fullTitle = title.get();

@@ -11,7 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import uk.co.dalelane.kafkaconnect.xboxlive.XblConfig;
-import uk.co.dalelane.kafkaconnect.xboxlive.records.SourceRecordFactory;
+import uk.co.dalelane.kafkaconnect.xboxlive.records.ActivityRecordFactory;
+import uk.co.dalelane.kafkaconnect.xboxlive.records.PresenceRecordFactory;
 
 
 /**
@@ -39,25 +40,36 @@ public class DataMonitor {
     private final PresenceFetcherTask presenceFetcher;
     private final PresenceCache presenceData;
 
-    // record factory for turning Xbox Live API responses into
+    // record factories for turning Xbox Live API responses into
     //   Kafka Connect records
-    private final SourceRecordFactory recordFactory;
+    private final ActivityRecordFactory activityRecordFactory;
+    private final PresenceRecordFactory presenceRecordFactory;
 
 
 
-    public DataMonitor(XblConfig config, Instant startTimestamp) {
-        log.info("Creating monitor {} {}", config, startTimestamp);
+    public DataMonitor(XblConfig config, Instant startActivityItems, Instant startPresences) {
+        log.info("Creating monitor {} {}", config, startActivityItems, startPresences);
 
         isRunning = false;
 
         pollIntervalMs = config.getPollInterval() * 1000;
 
-        recordFactory = new SourceRecordFactory(config);
-
-        activityData = new ActivityItemCache(startTimestamp);
+        // ACTIVITY ITEMS - e.g. Achievements
+        //
+        // class for creating Kafka Connect records
+        activityRecordFactory = new ActivityRecordFactory(config);
+        // cache for holding API responses waiting to be turned into Kafka Connect records
+        activityData = new ActivityItemCache(startActivityItems);
+        // worker for fetching API responses and putting them in the cache
         activityFetcher = new ActivityFetcherTask(activityData, config);
 
-        presenceData = new PresenceCache();
+        // PRESENCE - e.g. online/offline events
+        //
+        // class for creating Kafka Connect records
+        presenceRecordFactory = new PresenceRecordFactory(config);
+        // cache for holding API responses waiting to be turned into Kafka Connect records
+        presenceData = new PresenceCache(startPresences);
+        // worker for fetching API responses and putting them in the cache
         presenceFetcher = new PresenceFetcherTask(presenceData, config);
     }
 
@@ -88,13 +100,16 @@ public class DataMonitor {
 
 
     public List<SourceRecord> getRecords() {
-        Stream<SourceRecord> activityRecords = activityData.getActivityItems()
-                .stream()
-                .map(d -> recordFactory.createSourceRecord(d));
-        Stream<SourceRecord> presenceRecords = presenceData.getPresences()
-                .stream()
-                .map(d -> recordFactory.createSourceRecord(d));
-        return Stream.concat(activityRecords, presenceRecords)
-                .collect(Collectors.toList());
+        // combine the events from both caches into a single list
+        //  ready for returning to Kafka Connect
+        return Stream
+            .concat(
+                activityData.getActivityItems()
+                    .stream()
+                    .map(d -> activityRecordFactory.createSourceRecord(d)),
+                presenceData.getPresences()
+                    .stream()
+                    .map(d -> presenceRecordFactory.createSourceRecord(d)))
+            .collect(Collectors.toList());
     }
 }

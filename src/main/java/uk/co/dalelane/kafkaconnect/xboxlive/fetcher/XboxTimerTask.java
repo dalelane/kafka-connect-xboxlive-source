@@ -65,8 +65,6 @@ public abstract class XboxTimerTask extends TimerTask {
         URLConnection conn = urlObj.openConnection();
         conn.setRequestProperty("x-authorization", connectorConfig.getApiKey());
 
-        return new InputStreamReader(
-                conn.getInputStream(),
-                StandardCharsets.UTF_8);
+        return new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8);
     }
 }

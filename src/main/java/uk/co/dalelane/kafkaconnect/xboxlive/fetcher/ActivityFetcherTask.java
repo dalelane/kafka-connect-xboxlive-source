@@ -23,13 +23,23 @@ public class ActivityFetcherTask extends XboxTimerTask {
 
     private static Logger log = LoggerFactory.getLogger(ActivityFetcherTask.class);
 
-    // items retrieved from the Xbox Live API will be
-    //  added to this cache
+    /**
+     * API used by this task.
+     *
+     *  Documentation for this API can be found at https://xbl.io/console
+     */
+    private static final String API_URL = "https://xbl.io/api/v2/activity/feed";
+
+
+    /**
+     * items retrieved from the Xbox Live API will be added to this cache
+     */
     private final ActivityItemCache dataCache;
 
 
     public ActivityFetcherTask(ActivityItemCache cache, XblConfig config) {
-        super("https://xbl.io/api/v2/activity/feed", config);
+        super(API_URL, config);
+        log.debug("Created ActivityFetcherTask using {}", API_URL);
 
         // store a reference to the cache to add items to
         dataCache = cache;
@@ -56,12 +66,15 @@ public class ActivityFetcherTask extends XboxTimerTask {
     }
 
 
+    /**
+     * Create custom JSON parser that can create Java objects representing
+     *  Xbox Activity items.
+     */
     @Override
     protected Gson createParser() {
         GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(
-                ActivityItem.class,
-                new ActivityItemDeserializer());
+        gsonBuilder.registerTypeAdapter(ActivityItem.class,
+                                        new ActivityItemDeserializer());
         return gsonBuilder.create();
     }
 }

@@ -1,4 +1,4 @@
-FROM cp.icr.io/cp/ibm-eventstreams-kafka:11.1.5
+FROM cp.icr.io/cp/ibm-eventstreams-kafka:11.1.6
 
 # For this repo, create the my-plugins directory and copy
 #

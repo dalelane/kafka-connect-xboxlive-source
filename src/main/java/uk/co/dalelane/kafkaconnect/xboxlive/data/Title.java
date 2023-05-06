@@ -27,7 +27,7 @@ public class Title {
 
     @SerializedName("lastModified")
     @Expose
-    private String lastModified;
+    private Instant lastModified;
 
 
 
@@ -47,12 +47,8 @@ public class Title {
         return state;
     }
 
-    public String getLastModified() {
+    public Instant getLastModified() {
         return lastModified;
-    }
-
-    public Instant getLastModifiedInstant() {
-        return Instant.parse(lastModified);
     }
 
     @Override
