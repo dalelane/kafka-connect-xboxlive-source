@@ -68,8 +68,8 @@ public class ActivityRecordFactory {
     private static final Schema TEXT_POST_SCHEMA = SchemaBuilder.struct()
             .name("activity")
                 .field("description", Schema.STRING_SCHEMA)
-                .field("gamertag", Schema.STRING_SCHEMA)
-                .field("gamername", Schema.STRING_SCHEMA)
+                .field("gamertag", Schema.OPTIONAL_STRING_SCHEMA)
+                .field("gamername", Schema.OPTIONAL_STRING_SCHEMA)
                 .field("date", Schema.STRING_SCHEMA)
             .build();
 
