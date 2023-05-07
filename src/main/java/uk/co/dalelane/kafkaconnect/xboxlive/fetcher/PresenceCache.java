@@ -57,20 +57,23 @@ public class PresenceCache {
         for (Presence presence : presences) {
             String userid = presence.getXuid();
             if (latestPresence.containsKey(userid) &&
-                latestPresence.get(userid).equals(presence))
+                presence.getDate().isBefore(latestPresence.get(userid).getDate()))
+            {
+                // ignoring - older than the last event emitted for this gamer
+                log.debug("replacing presence {} with offline as it is before the last update for {}", userid);
+
+                presence = Presence.createOfflinePresence(userid);
+            }
+
+            if (presence.getDate().isBefore(initialTimestamp)) {
+                // ignoring - older than the last persisted offset from a previous run of the Connector
+                log.debug("ignoring presence {} which is older than initial offset {}", presence, initialTimestamp);
+            }
+            else if (latestPresence.containsKey(userid) &&
+                     latestPresence.get(userid).equals(presence))
             {
                 // ignoring - unchanged duplicate event
                 log.debug("ignoring presence {} which matches {}", presence, latestPresence.get(userid));
-            }
-            else if (latestPresence.containsKey(userid) &&
-                     presence.getDate().isBefore(latestPresence.get(userid).getDate()))
-            {
-                // ignoring - older than the last event emitted for this gamer
-                log.debug("ignoring presence {} which is before the last update for {}", userid);
-            }
-            else if (presence.getDate().isBefore(initialTimestamp)) {
-                // ignoring - older than the last persisted offset from a previous run of the Connector
-                log.debug("ignoring presence {} which is older than initial offset {}", presence, initialTimestamp);
             }
             else {
                 log.info("Identified new presence event {} with timestamp {}", presence, presence.getDate());

@@ -119,6 +119,12 @@ public class Presence {
         return state.equals(other.state);
     }
 
+    public static Presence createOfflinePresence(String userid) {
+        Presence p = new Presence();
+        p.xuid = userid;
+        p.state = "Offline";
+        return p;
+    }
 
     @Override
     public String toString() {
