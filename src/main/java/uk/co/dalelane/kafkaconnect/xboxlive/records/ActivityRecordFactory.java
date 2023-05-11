@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.kafka.connect.data.Schema;
 import org.apache.kafka.connect.data.SchemaBuilder;
 import org.apache.kafka.connect.data.Struct;
+import org.apache.kafka.connect.errors.DataException;
 import org.apache.kafka.connect.source.SourceRecord;
 import org.apache.kafka.connect.storage.OffsetStorageReader;
 import org.slf4j.Logger;
@@ -172,12 +173,20 @@ public class ActivityRecordFactory {
 
 
     public SourceRecord createSourceRecord(ActivityItem data) {
-        ActivityItemTypes type = data.getType();
-        return new SourceRecord(createSourcePartition(type),
-                                createSourceOffset(data),
-                                getTopicName(type),
-                                getSchema(type),
-                                createStruct(data));
+        try {
+            ActivityItemTypes type = data.getType();
+            return new SourceRecord(createSourcePartition(type),
+                                    createSourceOffset(data),
+                                    getTopicName(type),
+                                    getSchema(type),
+                                    createStruct(data));
+        }
+        catch (DataException de) {
+            log.error("Unable to create SourceRecord {}", data);
+            log.error("Data received from Xbox API doesn't match the schema defined in Connect",
+                      de);
+            return null;
+        }
     }
 
 

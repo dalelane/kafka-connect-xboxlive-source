@@ -104,12 +104,26 @@ public class DataMonitor {
         //  ready for returning to Kafka Connect
         return Stream
             .concat(
+                //
+                // activity data - e.g. Achievements
+                //
                 activityData.getActivityItems()
                     .stream()
-                    .map(d -> activityRecordFactory.createSourceRecord(d)),
+                    // turn the Xbox API response into a Connect record
+                    .map(d -> activityRecordFactory.createSourceRecord(d))
+                    // filter out any API responses that could not be parsed
+                    .filter(rec -> rec != null),
+
+                //
+                // presence data - e.g. start/stop playing a game
+                //
                 presenceData.getPresences()
                     .stream()
-                    .map(d -> presenceRecordFactory.createSourceRecord(d)))
+                    // turn the Xbox API response into a Connect record
+                    .map(d -> presenceRecordFactory.createSourceRecord(d))
+                    // filter out any API responses that could not be parsed
+                    .filter(rec -> rec != null))
+
             .collect(Collectors.toList());
     }
 }

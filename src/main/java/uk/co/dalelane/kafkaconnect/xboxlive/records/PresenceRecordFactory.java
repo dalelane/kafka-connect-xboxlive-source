@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.kafka.connect.data.Schema;
 import org.apache.kafka.connect.data.SchemaBuilder;
 import org.apache.kafka.connect.data.Struct;
+import org.apache.kafka.connect.errors.DataException;
 import org.apache.kafka.connect.source.SourceRecord;
 import org.apache.kafka.connect.storage.OffsetStorageReader;
 import org.slf4j.Logger;
@@ -58,15 +59,19 @@ public class PresenceRecordFactory {
     }
 
     public SourceRecord createSourceRecord(Presence data) {
-        Map<String, Object> offset = createSourceOffset(data);
-
-        log.debug("creating source record {} with offset {}", data, offset.get(SOURCE_OFFSET));
-
-        return new SourceRecord(createSourcePartition(),
-                                offset,
-                                presenceTopic,
-                                PRESENCE_SCHEMA,
-                                createStruct(data));
+        try {
+            return new SourceRecord(createSourcePartition(),
+                                    createSourceOffset(data),
+                                    presenceTopic,
+                                    PRESENCE_SCHEMA,
+                                    createStruct(data));
+        }
+        catch (DataException de) {
+            log.error("Unable to create SourceRecord {}", data);
+            log.error("Data received from Xbox API doesn't match the schema defined in Connect",
+                      de);
+            return null;
+        }
     }
 
     private static Map<String, Object> createSourcePartition() {
