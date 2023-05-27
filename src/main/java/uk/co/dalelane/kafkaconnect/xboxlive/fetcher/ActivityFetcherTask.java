@@ -3,13 +3,13 @@ package uk.co.dalelane.kafkaconnect.xboxlive.fetcher;
 import java.io.IOException;
 import java.io.Reader;
 
+import org.apache.kafka.common.config.AbstractConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import uk.co.dalelane.kafkaconnect.xboxlive.XblConfig;
 import uk.co.dalelane.kafkaconnect.xboxlive.data.ActivityFeed;
 import uk.co.dalelane.kafkaconnect.xboxlive.data.ActivityItem;
 import uk.co.dalelane.kafkaconnect.xboxlive.data.ActivityItemDeserializer;
@@ -37,7 +37,7 @@ public class ActivityFetcherTask extends XboxTimerTask {
     private final ActivityItemCache dataCache;
 
 
-    public ActivityFetcherTask(ActivityItemCache cache, XblConfig config) {
+    public ActivityFetcherTask(ActivityItemCache cache, AbstractConfig config) {
         super(API_URL, config);
         log.debug("Created ActivityFetcherTask using {}", API_URL);
 

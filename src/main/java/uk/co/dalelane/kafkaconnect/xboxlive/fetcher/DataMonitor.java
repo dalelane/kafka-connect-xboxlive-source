@@ -6,6 +6,7 @@ import java.util.Timer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.kafka.common.config.AbstractConfig;
 import org.apache.kafka.connect.source.SourceRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,12 +48,12 @@ public class DataMonitor {
 
 
 
-    public DataMonitor(XblConfig config, Instant startActivityItems, Instant startPresences) {
+    public DataMonitor(AbstractConfig config, Instant startActivityItems, Instant startPresences) {
         log.info("Creating monitor {} {}", config, startActivityItems, startPresences);
 
         isRunning = false;
 
-        pollIntervalMs = config.getPollInterval() * 1000;
+        pollIntervalMs = config.getInt(XblConfig.POLL_INTERVAL_PARAM_CONFIG) * 1000;
 
         // ACTIVITY ITEMS - e.g. Achievements
         //

@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.Collections;
 import java.util.Map;
 
+import org.apache.kafka.common.config.AbstractConfig;
 import org.apache.kafka.connect.data.Schema;
 import org.apache.kafka.connect.data.SchemaBuilder;
 import org.apache.kafka.connect.data.Struct;
@@ -28,8 +29,10 @@ public class PresenceRecordFactory {
 
     private final String presenceTopic;
 
-    public PresenceRecordFactory(XblConfig config) {
-        presenceTopic = config.getTopicPrefix() + "PRESENCE";
+    public PresenceRecordFactory(AbstractConfig config) {
+        String topicPrefix = config.getString(XblConfig.TOPIC_NAME_PREFIX_PARAM_CONFIG);
+
+        presenceTopic = topicPrefix + "PRESENCE";
     }
 
     private static final Schema PRESENCE_SCHEMA = SchemaBuilder.struct()

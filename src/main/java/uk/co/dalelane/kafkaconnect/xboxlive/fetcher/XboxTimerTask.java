@@ -10,6 +10,7 @@ import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.TimerTask;
 
+import org.apache.kafka.common.config.AbstractConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +26,7 @@ public abstract class XboxTimerTask extends TimerTask {
     private static Logger log = LoggerFactory.getLogger(XboxTimerTask.class);
 
     // config - needed to provide access to the API key
-    private final XblConfig connectorConfig;
+    private final AbstractConfig connectorConfig;
 
     // URL that will be polled when the task is run
     private URL urlObj;
@@ -35,7 +36,7 @@ public abstract class XboxTimerTask extends TimerTask {
     protected Gson parser;
 
 
-    public XboxTimerTask(String url, XblConfig config) {
+    public XboxTimerTask(String url, AbstractConfig config) {
         log.info("Initializing xbox api fetcher task for {}", url);
 
         connectorConfig = config;
@@ -63,7 +64,7 @@ public abstract class XboxTimerTask extends TimerTask {
     protected Reader getApiReader() throws IOException {
         // add request header with the API key required by xbl.io
         URLConnection conn = urlObj.openConnection();
-        conn.setRequestProperty("x-authorization", connectorConfig.getApiKey());
+        conn.setRequestProperty("x-authorization", connectorConfig.getString(XblConfig.API_KEY_PARAM_CONFIG));
 
         return new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8);
     }

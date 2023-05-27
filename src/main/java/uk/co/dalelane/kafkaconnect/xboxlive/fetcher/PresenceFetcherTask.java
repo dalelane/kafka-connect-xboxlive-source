@@ -7,6 +7,7 @@ import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.kafka.common.config.AbstractConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +15,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import uk.co.dalelane.kafkaconnect.xboxlive.XblConfig;
 import uk.co.dalelane.kafkaconnect.xboxlive.data.InstantDeserializer;
 import uk.co.dalelane.kafkaconnect.xboxlive.data.Presence;
 
@@ -46,7 +46,7 @@ public class PresenceFetcherTask extends XboxTimerTask {
     private Type collectionType = TypeToken.getParameterized(List.class, Presence.class).getType();
 
 
-    public PresenceFetcherTask(PresenceCache cache, XblConfig config) {
+    public PresenceFetcherTask(PresenceCache cache, AbstractConfig config) {
         super(API_URL, config);
         log.debug("Created PresenceFetcherTask using {}", API_URL);
 

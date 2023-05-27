@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.Collections;
 import java.util.Map;
 
+import org.apache.kafka.common.config.AbstractConfig;
 import org.apache.kafka.connect.data.Schema;
 import org.apache.kafka.connect.data.SchemaBuilder;
 import org.apache.kafka.connect.data.Struct;
@@ -39,15 +40,17 @@ public class ActivityRecordFactory {
     private final String userPostTopic;
     private final String defaultTopic;
 
-    public ActivityRecordFactory(XblConfig config) {
-        achievementTopic = config.getTopicPrefix() + "ACHIEVEMENTS";
-        containerTopic = config.getTopicPrefix() + "CONTAINER";
-        recommendationTopic = config.getTopicPrefix() + "RECOMMENDATIONS";
-        dvrTopic = config.getTopicPrefix() + "GAMEDVR";
-        screenshotTopic = config.getTopicPrefix() + "SCREENSHOTS";
-        textPostTopic = config.getTopicPrefix() + "TEXTPOSTS";
-        userPostTopic = config.getTopicPrefix() + "USERPOSTS";
-        defaultTopic = config.getTopicPrefix() + "DEFAULT";
+    public ActivityRecordFactory(AbstractConfig config) {
+        String topicPrefix = config.getString(XblConfig.TOPIC_NAME_PREFIX_PARAM_CONFIG);
+
+        achievementTopic = topicPrefix + "ACHIEVEMENTS";
+        containerTopic = topicPrefix + "CONTAINER";
+        recommendationTopic = topicPrefix + "RECOMMENDATIONS";
+        dvrTopic = topicPrefix + "GAMEDVR";
+        screenshotTopic = topicPrefix + "SCREENSHOTS";
+        textPostTopic = topicPrefix + "TEXTPOSTS";
+        userPostTopic = topicPrefix + "USERPOSTS";
+        defaultTopic = topicPrefix + "DEFAULT";
     }
 
     private static final Schema ACHIEVEMENTS_SCHEMA = SchemaBuilder.struct()

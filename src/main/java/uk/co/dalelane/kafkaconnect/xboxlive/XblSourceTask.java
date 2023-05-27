@@ -3,6 +3,7 @@ package uk.co.dalelane.kafkaconnect.xboxlive;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.kafka.common.config.AbstractConfig;
 import org.apache.kafka.connect.source.SourceRecord;
 import org.apache.kafka.connect.source.SourceTask;
 import org.apache.kafka.connect.storage.OffsetStorageReader;
@@ -34,7 +35,7 @@ public class XblSourceTask extends SourceTask {
         // otherwise, re-start an existing worker
         if (sourceData == null) {
             log.debug("reading config from task properties");
-            XblConfig config = new XblConfig(properties);
+            AbstractConfig config = new AbstractConfig(XblConfig.CONFIG_DEF, properties);
 
             OffsetStorageReader offsetStorageReader = getOffsetStorageReader();
             sourceData = new DataMonitor(config,
